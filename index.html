@@ -45,29 +45,36 @@ body::before {
 }
 
 /* CUSTOM CURSOR */
-.cursor {
-  position: fixed;
-  width: 20px; height: 20px;
-  border: 1.5px solid var(--green);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%,-50%);
-  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
-  mix-blend-mode: difference;
+@media (pointer: fine) {
+  .cursor {
+    position: fixed;
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--green);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-dot {
+    position: fixed;
+    width: 4px; height: 4px;
+    background: var(--green);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%,-50%);
+  }
+  .cursor.active {
+    width: 40px; height: 40px;
+    background: var(--green-glow);
+  }
+  body { cursor: none; }
 }
-.cursor-dot {
-  position: fixed;
-  width: 4px; height: 4px;
-  background: var(--green);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%,-50%);
-}
-.cursor.active {
-  width: 40px; height: 40px;
-  background: var(--green-glow);
+@media (pointer: coarse) {
+  .cursor, .cursor-dot { display: none !important; }
+  body { cursor: auto; }
 }
 
 /* SCROLLBAR */
@@ -1123,6 +1130,229 @@ footer {
   transition: color 0.2s;
 }
 .mobile-menu a:hover { color: var(--green); }
+
+/* ===== SIZE CHART ===== */
+.size-chart-toggle {
+  background: none;
+  border: none;
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
+  display: block;
+  text-transform: uppercase;
+}
+.size-chart-table {
+  display: none;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+}
+.size-chart-table.visible { display: table; }
+.size-chart-table th {
+  background: rgba(57,255,20,0.08);
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.size-chart-table td {
+  color: var(--silver);
+  padding: 7px 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.size-chart-table tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* ===== SHIPPING MODAL ===== */
+.shipping-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 3500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.shipping-modal.open { opacity: 1; pointer-events: all; }
+.shipping-box {
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  padding: 36px;
+  width: 92%; max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.9);
+  transition: transform 0.3s;
+}
+.shipping-modal.open .shipping-box { transform: scale(1); }
+.shipping-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.9rem;
+  letter-spacing: 4px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.shipping-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--silver);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+.form-input, .form-select {
+  width: 100%;
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  padding: 12px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--green);
+}
+.form-input::placeholder { color: rgba(255,255,255,0.2); }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.payment-section {
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.payment-title {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--silver);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity: 0.7;
+}
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.payment-option:hover, .payment-option.selected {
+  border-color: var(--green);
+  background: var(--green-glow);
+}
+.payment-option input[type=radio] { accent-color: var(--green); }
+.payment-option-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  flex: 1;
+}
+.payment-option-icon {
+  font-size: 1.1rem;
+}
+.order-summary-mini {
+  background: rgba(57,255,20,0.04);
+  border: 1px solid var(--border);
+  padding: 14px;
+  margin-bottom: 20px;
+}
+.order-summary-mini-title {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.order-summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--silver);
+  margin-bottom: 4px;
+}
+.order-summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--green);
+}
+.btn-place-order {
+  width: 100%;
+  background: var(--green);
+  color: #000;
+  border: none;
+  padding: 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+.btn-place-order:hover { box-shadow: 0 0 40px rgba(57,255,20,0.4); }
+.btn-place-order:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-back-to-cart {
+  width: 100%;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--silver);
+  padding: 12px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+.btn-back-to-cart:hover { border-color: #555; color: #fff; }
+
 </style>
 </head>
 <body>
@@ -1322,8 +1552,8 @@ footer {
       <span class="cart-total-label">Total</span>
       <span class="cart-total-amount" id="cartTotal">₦0</span>
     </div>
-    <button class="btn-checkout" onclick="checkoutEmail()">PLACE ORDER VIA EMAIL</button>
-    <button class="btn-whatsapp" onclick="checkoutWhatsApp()">ORDER VIA WHATSAPP</button>
+    <button class="btn-checkout" onclick="openShipping()">PROCEED TO CHECKOUT</button>
+    
   </div>
 </div>
 
@@ -1332,6 +1562,7 @@ footer {
   <div class="modal-box">
     <div class="modal-title">SELECT SIZE</div>
     <div class="modal-product" id="modalProductName"></div>
+    <div id="sizeChartArea"></div>
     <div class="size-grid" id="sizeGrid"></div>
     <div class="modal-actions">
       <button class="btn-add-confirm" onclick="confirmAdd()">ADD TO CART</button>
@@ -1340,10 +1571,92 @@ footer {
   </div>
 </div>
 
+
+<!-- SHIPPING MODAL -->
+<div class="shipping-modal" id="shippingModal">
+  <div class="shipping-box">
+    <div class="shipping-title">DELIVERY DETAILS</div>
+    <div class="shipping-sub">// Fill in your shipping information</div>
+
+    <div class="order-summary-mini" id="shippingOrderSummary"></div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name *</label>
+        <input class="form-input" id="shFirstName" type="text" placeholder="John">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name *</label>
+        <input class="form-input" id="shLastName" type="text" placeholder="Doe">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address *</label>
+      <input class="form-input" id="shEmail" type="email" placeholder="you@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone Number *</label>
+      <input class="form-input" id="shPhone" type="tel" placeholder="+234 800 000 0000">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Delivery Address *</label>
+      <input class="form-input" id="shAddress" type="text" placeholder="House number, street name">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">City *</label>
+        <input class="form-input" id="shCity" type="text" placeholder="Lagos">
+      </div>
+      <div class="form-group">
+        <label class="form-label">State *</label>
+        <select class="form-select" id="shState">
+          <option value="">Select State</option>
+          <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+          <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+          <option>Benue</option><option>Borno</option><option>Cross River</option>
+          <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+          <option>Ekiti</option><option>Enugu</option><option>FCT — Abuja</option>
+          <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+          <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+          <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+          <option selected>Lagos</option><option>Nasarawa</option><option>Niger</option>
+          <option>Ogun</option><option>Ondo</option><option>Osun</option>
+          <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+          <option>Sokoto</option><option>Taraba</option><option>Yobe</option>
+          <option>Zamfara</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Additional Notes (optional)</label>
+      <input class="form-input" id="shNotes" type="text" placeholder="Landmark, delivery instructions...">
+    </div>
+
+    <div class="payment-section">
+      <div class="payment-title">// Payment Method</div>
+      <div class="payment-options">
+        <label class="payment-option selected" id="payOptWhatsApp">
+          <input type="radio" name="payMethod" value="whatsapp" checked onchange="selectPayment(this.closest('.payment-option'))">
+          <span class="payment-option-label">📱 Order via WhatsApp</span>
+        </label>
+        <label class="payment-option" id="payOptEmail">
+          <input type="radio" name="payMethod" value="email" onchange="selectPayment(this.closest('.payment-option'))">
+          <span class="payment-option-label">📧 Order via Email</span>
+        </label>
+      </div>
+      <button class="btn-place-order" id="placeOrderBtn" onclick="placeOrder()">PLACE ORDER</button>
+      <button class="btn-back-to-cart" onclick="closeShipping()">← BACK TO CART</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
+
+const sizeCharts = {`tees`: `<table class="size-chart-table" id="chart-tees">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SHOULDER (cm)</th></tr>\n<tr><td>XS</td><td>88–92</td><td>65</td><td>42</td></tr>\n<tr><td>S</td><td>92–96</td><td>68</td><td>44</td></tr>\n<tr><td>M</td><td>96–100</td><td>71</td><td>46</td></tr>\n<tr><td>L</td><td>100–104</td><td>74</td><td>48</td></tr>\n<tr><td>XL</td><td>104–108</td><td>77</td><td>50</td></tr>\n<tr><td>XXL</td><td>108–114</td><td>80</td><td>52</td></tr>\n</table>`, `hoodies`: `<table class="size-chart-table" id="chart-hoodies">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SLEEVE (cm)</th></tr>\n<tr><td>S</td><td>96–100</td><td>68</td><td>62</td></tr>\n<tr><td>M</td><td>100–106</td><td>71</td><td>64</td></tr>\n<tr><td>L</td><td>106–112</td><td>74</td><td>66</td></tr>\n<tr><td>XL</td><td>112–118</td><td>77</td><td>68</td></tr>\n<tr><td>XXL</td><td>118–124</td><td>80</td><td>70</td></tr>\n<tr><td>3XL</td><td>124–130</td><td>83</td><td>72</td></tr>\n</table>`, `crewnecks`: `<table class="size-chart-table" id="chart-crewnecks">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SLEEVE (cm)</th></tr>\n<tr><td>S</td><td>94–98</td><td>66</td><td>61</td></tr>\n<tr><td>M</td><td>98–104</td><td>69</td><td>63</td></tr>\n<tr><td>L</td><td>104–110</td><td>72</td><td>65</td></tr>\n<tr><td>XL</td><td>110–116</td><td>75</td><td>67</td></tr>\n<tr><td>XXL</td><td>116–122</td><td>78</td><td>69</td></tr>\n<tr><td>3XL</td><td>122–128</td><td>81</td><td>71</td></tr>\n</table>`, `sets`: `<table class="size-chart-table" id="chart-sets">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>WAIST (cm)</th><th>INSEAM (cm)</th></tr>\n<tr><td>S</td><td>96–100</td><td>70–74</td><td>76</td></tr>\n<tr><td>M</td><td>100–106</td><td>74–78</td><td>78</td></tr>\n<tr><td>L</td><td>106–112</td><td>78–84</td><td>80</td></tr>\n<tr><td>XL</td><td>112–118</td><td>84–90</td><td>82</td></tr>\n<tr><td>XXL</td><td>118–124</td><td>90–96</td><td>84</td></tr>\n</table>`, `bottoms`: `<table class="size-chart-table" id="chart-bottoms">\n<tr><th>SIZE</th><th>WAIST (cm)</th><th>HIP (cm)</th><th>INSEAM (cm)</th></tr>\n<tr><td>XS</td><td>62–66</td><td>84–88</td><td>74</td></tr>\n<tr><td>S</td><td>66–70</td><td>88–92</td><td>76</td></tr>\n<tr><td>M</td><td>70–76</td><td>92–98</td><td>78</td></tr>\n<tr><td>L</td><td>76–82</td><td>98–104</td><td>80</td></tr>\n<tr><td>XL</td><td>82–88</td><td>104–110</td><td>82</td></tr>\n<tr><td>XXL</td><td>88–96</td><td>110–118</td><td>84</td></tr>\n</table>`, `shirts`: `<table class="size-chart-table" id="chart-shirts">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SHOULDER (cm)</th></tr>\n<tr><td>XS</td><td>86–90</td><td>62</td><td>40</td></tr>\n<tr><td>S</td><td>90–94</td><td>65</td><td>42</td></tr>\n<tr><td>M</td><td>94–100</td><td>68</td><td>44</td></tr>\n<tr><td>L</td><td>100–106</td><td>71</td><td>46</td></tr>\n<tr><td>XL</td><td>106–112</td><td>74</td><td>48</td></tr>\n<tr><td>XXL</td><td>112–118</td><td>77</td><td>50</td></tr>\n</table>`};
+
 // ============ PRODUCTS DATA ============
 const products = [
   {id:1, name:"Chaos Sovereign Tee", category:"tees", price:30000, badge:"new", img:"https://lh3.googleusercontent.com/d/17dM0D0nu_k7vEHVRpKwk83hqw4u9L4cA"},
@@ -1437,7 +1750,17 @@ function openSizeModal(productId) {
   document.getElementById('sizeGrid').innerHTML = sizes.map(s => 
     `<button class="size-btn" onclick="selectSize(this,'${s}')">${s}</button>`
   ).join('');
+  // Size chart
+  const chart = sizeCharts[pendingProduct.category] || '';
+  const chartHtml = chart ? `<button class="size-chart-toggle" onclick="toggleChart()">📐 View Size Chart</button>${chart}` : '';
+  document.getElementById('sizeChartArea').innerHTML = chartHtml;
   document.getElementById('sizeModal').classList.add('open');
+}
+function toggleChart() {
+  const tables = document.querySelectorAll('.size-chart-table');
+  tables.forEach(t => t.classList.toggle('visible'));
+  const btn = document.querySelector('.size-chart-toggle');
+  if (btn) btn.textContent = btn.textContent.includes('View') ? '📐 Hide Size Chart' : '📐 View Size Chart';
 }
 
 function selectSize(btn, size) {
@@ -1528,22 +1851,73 @@ function openCart() {
 }
 
 // ============ CHECKOUT ============
-function checkoutEmail() {
+function checkoutEmail() { openShipping(); }
+function checkoutWhatsApp() { openShipping(); }
+
+// ============ SHIPPING MODAL ============
+function openShipping() {
   if (cart.length === 0) return;
+  const modal = document.getElementById('shippingModal');
+  const summary = document.getElementById('shippingOrderSummary');
   const total = cart.reduce((a,i) => a + i.price*i.qty, 0);
-  const items = cart.map(i => `${i.name} (Size: ${i.size}) x${i.qty} = ${formatPrice(i.price * i.qty)}`).join('\n');
-  const subject = encodeURIComponent('TOXIC LORD — New Order');
-  const body = encodeURIComponent(`Hello Toxic Lord,\n\nI would like to place the following order:\n\n${items}\n\nORDER TOTAL: ${formatPrice(total)}\n\nPlease provide payment details and delivery info.\n\nThank you.`);
-  window.open(`mailto:lordifygram@gmail.com?subject=${subject}&body=${body}`);
+  const items = cart.map(i => `<div class="order-summary-item"><span>${i.name} (${i.size}) x${i.qty}</span><span>${formatPrice(i.price*i.qty)}</span></div>`).join('');
+  summary.innerHTML = `<div class="order-summary-mini-title">// Order Summary</div>${items}<div class="order-summary-total"><span>TOTAL</span><span>${formatPrice(total)}</span></div>`;
+  modal.classList.add('open');
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+}
+function closeShipping() {
+  document.getElementById('shippingModal').classList.remove('open');
+  toggleCart();
+}
+function selectPayment(el) {
+  document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function getShippingData() {
+  return {
+    firstName: document.getElementById('shFirstName').value.trim(),
+    lastName: document.getElementById('shLastName').value.trim(),
+    email: document.getElementById('shEmail').value.trim(),
+    phone: document.getElementById('shPhone').value.trim(),
+    address: document.getElementById('shAddress').value.trim(),
+    city: document.getElementById('shCity').value.trim(),
+    state: document.getElementById('shState').value,
+    notes: document.getElementById('shNotes').value.trim(),
+  };
+}
+function validateShipping(d) {
+  if (!d.firstName || !d.lastName) { showToast('ENTER YOUR FULL NAME'); return false; }
+  if (!d.email || !d.email.includes('@')) { showToast('ENTER A VALID EMAIL'); return false; }
+  if (!d.phone) { showToast('ENTER YOUR PHONE NUMBER'); return false; }
+  if (!d.address) { showToast('ENTER YOUR DELIVERY ADDRESS'); return false; }
+  if (!d.city) { showToast('ENTER YOUR CITY'); return false; }
+  if (!d.state) { showToast('SELECT YOUR STATE'); return false; }
+  return true;
+}
+function placeOrder() {
+  const d = getShippingData();
+  if (!validateShipping(d)) return;
+  const method = document.querySelector('input[name=payMethod]:checked').value;
+  const total = cart.reduce((a,i) => a + i.price*i.qty, 0);
+  const itemLines = cart.map(i => `${i.name} (Size: ${i.size}) x${i.qty} = ${formatPrice(i.price*i.qty)}`).join('\n');
+  const shipping = `${d.firstName} ${d.lastName}\n${d.address}, ${d.city}, ${d.state}\nPhone: ${d.phone}${d.notes ? '\nNote: ' + d.notes : ''}`;
+
+  if (method === 'whatsapp') {
+    const msg = encodeURIComponent(`*TOXIC LORD — New Order* 🖤\n\n*Items:*\n${cart.map(i=>`• ${i.name} (${i.size}) x${i.qty} = ${formatPrice(i.price*i.qty)}`).join('\n')}\n\n*TOTAL: ${formatPrice(total)}*\n\n*Delivery Details:*\n${shipping}`);
+    window.open(`https://wa.me/2348124991431?text=${msg}`, '_blank');
+    document.getElementById('shippingModal').classList.remove('open');
+    cart = []; updateCartUI(); showToast('ORDER SENT VIA WHATSAPP 🖤');
+  } else {
+    const subject = encodeURIComponent('TOXIC LORD — New Order');
+    const body = encodeURIComponent(`TOXIC LORD — NEW ORDER\n\nItems:\n${itemLines}\n\nTOTAL: ${formatPrice(total)}\n\nDelivery Details:\n${shipping}\n\nEmail: ${d.email}`);
+    window.open(`mailto:lordifygram@gmail.com?subject=${subject}&body=${body}`);
+    document.getElementById('shippingModal').classList.remove('open');
+    cart = []; updateCartUI(); showToast('ORDER SENT VIA EMAIL 🖤');
+  }
 }
 
-function checkoutWhatsApp() {
-  if (cart.length === 0) return;
-  const total = cart.reduce((a,i) => a + i.price*i.qty, 0);
-  const items = cart.map(i => `• ${i.name} (Size: ${i.size}) x${i.qty} = ${formatPrice(i.price * i.qty)}`).join('\n');
-  const msg = encodeURIComponent(`*TOXIC LORD — New Order* 🖤\n\n${items}\n\n*TOTAL: ${formatPrice(total)}*\n\nPlease confirm payment details. Thank you!`);
-  window.open(`https://wa.me/2348124991431?text=${msg}`, '_blank');
-}
+
 
 // ============ TOAST ============
 function showToast(msg) {
@@ -1553,30 +1927,29 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ============ CURSOR ============
+// ============ CURSOR (desktop only) ============
 const cursor = document.getElementById('cursor');
 const dot = document.getElementById('cursorDot');
-let mx=0, my=0, cx=0, cy=0;
-
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dot.style.left = mx + 'px';
-  dot.style.top = my + 'px';
-});
-
-function animateCursor() {
-  cx += (mx - cx) * 0.15;
-  cy += (my - cy) * 0.15;
-  cursor.style.left = cx + 'px';
-  cursor.style.top = cy + 'px';
-  requestAnimationFrame(animateCursor);
+if (window.matchMedia('(pointer: fine)').matches) {
+  let mx=0, my=0, cx=0, cy=0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+  function animateCursor() {
+    cx += (mx - cx) * 0.15;
+    cy += (my - cy) * 0.15;
+    cursor.style.left = cx + 'px';
+    cursor.style.top = cy + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+  });
 }
-animateCursor();
-
-document.querySelectorAll('a,button').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
-});
 
 // ============ MOBILE MENU ============
 function toggleMobile() {
