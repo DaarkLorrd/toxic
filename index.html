@@ -46,34 +46,20 @@ body::before {
 
 /* CUSTOM CURSOR */
 @media (pointer: fine) {
-  .cursor {
-    position: fixed;
-    width: 20px; height: 20px;
-    border: 1.5px solid var(--green);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 99999;
-    transform: translate(-50%,-50%);
-    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
-    mix-blend-mode: difference;
-  }
+  body { cursor: none; }
   .cursor-dot {
     position: fixed;
-    width: 4px; height: 4px;
+    width: 6px; height: 6px;
     background: var(--green);
     border-radius: 50%;
     pointer-events: none;
     z-index: 99999;
     transform: translate(-50%,-50%);
+    box-shadow: 0 0 8px var(--green);
   }
-  .cursor.active {
-    width: 40px; height: 40px;
-    background: var(--green-glow);
-  }
-  body { cursor: none; }
 }
 @media (pointer: coarse) {
-  .cursor, .cursor-dot { display: none !important; }
+  .cursor-dot { display: none !important; }
   body { cursor: auto; }
 }
 
@@ -1358,7 +1344,6 @@ footer {
 <body>
 
 <!-- Custom Cursor -->
-<div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
 <!-- Mobile Menu -->
@@ -1655,7 +1640,61 @@ footer {
 
 <script>
 
-const sizeCharts = {`tees`: `<table class="size-chart-table" id="chart-tees">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SHOULDER (cm)</th></tr>\n<tr><td>XS</td><td>88–92</td><td>65</td><td>42</td></tr>\n<tr><td>S</td><td>92–96</td><td>68</td><td>44</td></tr>\n<tr><td>M</td><td>96–100</td><td>71</td><td>46</td></tr>\n<tr><td>L</td><td>100–104</td><td>74</td><td>48</td></tr>\n<tr><td>XL</td><td>104–108</td><td>77</td><td>50</td></tr>\n<tr><td>XXL</td><td>108–114</td><td>80</td><td>52</td></tr>\n</table>`, `hoodies`: `<table class="size-chart-table" id="chart-hoodies">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SLEEVE (cm)</th></tr>\n<tr><td>S</td><td>96–100</td><td>68</td><td>62</td></tr>\n<tr><td>M</td><td>100–106</td><td>71</td><td>64</td></tr>\n<tr><td>L</td><td>106–112</td><td>74</td><td>66</td></tr>\n<tr><td>XL</td><td>112–118</td><td>77</td><td>68</td></tr>\n<tr><td>XXL</td><td>118–124</td><td>80</td><td>70</td></tr>\n<tr><td>3XL</td><td>124–130</td><td>83</td><td>72</td></tr>\n</table>`, `crewnecks`: `<table class="size-chart-table" id="chart-crewnecks">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SLEEVE (cm)</th></tr>\n<tr><td>S</td><td>94–98</td><td>66</td><td>61</td></tr>\n<tr><td>M</td><td>98–104</td><td>69</td><td>63</td></tr>\n<tr><td>L</td><td>104–110</td><td>72</td><td>65</td></tr>\n<tr><td>XL</td><td>110–116</td><td>75</td><td>67</td></tr>\n<tr><td>XXL</td><td>116–122</td><td>78</td><td>69</td></tr>\n<tr><td>3XL</td><td>122–128</td><td>81</td><td>71</td></tr>\n</table>`, `sets`: `<table class="size-chart-table" id="chart-sets">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>WAIST (cm)</th><th>INSEAM (cm)</th></tr>\n<tr><td>S</td><td>96–100</td><td>70–74</td><td>76</td></tr>\n<tr><td>M</td><td>100–106</td><td>74–78</td><td>78</td></tr>\n<tr><td>L</td><td>106–112</td><td>78–84</td><td>80</td></tr>\n<tr><td>XL</td><td>112–118</td><td>84–90</td><td>82</td></tr>\n<tr><td>XXL</td><td>118–124</td><td>90–96</td><td>84</td></tr>\n</table>`, `bottoms`: `<table class="size-chart-table" id="chart-bottoms">\n<tr><th>SIZE</th><th>WAIST (cm)</th><th>HIP (cm)</th><th>INSEAM (cm)</th></tr>\n<tr><td>XS</td><td>62–66</td><td>84–88</td><td>74</td></tr>\n<tr><td>S</td><td>66–70</td><td>88–92</td><td>76</td></tr>\n<tr><td>M</td><td>70–76</td><td>92–98</td><td>78</td></tr>\n<tr><td>L</td><td>76–82</td><td>98–104</td><td>80</td></tr>\n<tr><td>XL</td><td>82–88</td><td>104–110</td><td>82</td></tr>\n<tr><td>XXL</td><td>88–96</td><td>110–118</td><td>84</td></tr>\n</table>`, `shirts`: `<table class="size-chart-table" id="chart-shirts">\n<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SHOULDER (cm)</th></tr>\n<tr><td>XS</td><td>86–90</td><td>62</td><td>40</td></tr>\n<tr><td>S</td><td>90–94</td><td>65</td><td>42</td></tr>\n<tr><td>M</td><td>94–100</td><td>68</td><td>44</td></tr>\n<tr><td>L</td><td>100–106</td><td>71</td><td>46</td></tr>\n<tr><td>XL</td><td>106–112</td><td>74</td><td>48</td></tr>\n<tr><td>XXL</td><td>112–118</td><td>77</td><td>50</td></tr>\n</table>`};
+const sizeCharts = {
+  tees: `<table class="size-chart-table" id="chart-tees">
+<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SHOULDER (cm)</th></tr>
+<tr><td>XS</td><td>88–92</td><td>65</td><td>42</td></tr>
+<tr><td>S</td><td>92–96</td><td>68</td><td>44</td></tr>
+<tr><td>M</td><td>96–100</td><td>71</td><td>46</td></tr>
+<tr><td>L</td><td>100–104</td><td>74</td><td>48</td></tr>
+<tr><td>XL</td><td>104–108</td><td>77</td><td>50</td></tr>
+<tr><td>XXL</td><td>108–114</td><td>80</td><td>52</td></tr>
+</table>`,
+  hoodies: `<table class="size-chart-table" id="chart-hoodies">
+<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SLEEVE (cm)</th></tr>
+<tr><td>S</td><td>96–100</td><td>68</td><td>62</td></tr>
+<tr><td>M</td><td>100–106</td><td>71</td><td>64</td></tr>
+<tr><td>L</td><td>106–112</td><td>74</td><td>66</td></tr>
+<tr><td>XL</td><td>112–118</td><td>77</td><td>68</td></tr>
+<tr><td>XXL</td><td>118–124</td><td>80</td><td>70</td></tr>
+<tr><td>3XL</td><td>124–130</td><td>83</td><td>72</td></tr>
+</table>`,
+  crewnecks: `<table class="size-chart-table" id="chart-crewnecks">
+<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SLEEVE (cm)</th></tr>
+<tr><td>S</td><td>94–98</td><td>66</td><td>61</td></tr>
+<tr><td>M</td><td>98–104</td><td>69</td><td>63</td></tr>
+<tr><td>L</td><td>104–110</td><td>72</td><td>65</td></tr>
+<tr><td>XL</td><td>110–116</td><td>75</td><td>67</td></tr>
+<tr><td>XXL</td><td>116–122</td><td>78</td><td>69</td></tr>
+<tr><td>3XL</td><td>122–128</td><td>81</td><td>71</td></tr>
+</table>`,
+  sets: `<table class="size-chart-table" id="chart-sets">
+<tr><th>SIZE</th><th>CHEST (cm)</th><th>WAIST (cm)</th><th>INSEAM (cm)</th></tr>
+<tr><td>S</td><td>96–100</td><td>70–74</td><td>76</td></tr>
+<tr><td>M</td><td>100–106</td><td>74–78</td><td>78</td></tr>
+<tr><td>L</td><td>106–112</td><td>78–84</td><td>80</td></tr>
+<tr><td>XL</td><td>112–118</td><td>84–90</td><td>82</td></tr>
+<tr><td>XXL</td><td>118–124</td><td>90–96</td><td>84</td></tr>
+</table>`,
+  bottoms: `<table class="size-chart-table" id="chart-bottoms">
+<tr><th>SIZE</th><th>WAIST (cm)</th><th>HIP (cm)</th><th>INSEAM (cm)</th></tr>
+<tr><td>XS</td><td>62–66</td><td>84–88</td><td>74</td></tr>
+<tr><td>S</td><td>66–70</td><td>88–92</td><td>76</td></tr>
+<tr><td>M</td><td>70–76</td><td>92–98</td><td>78</td></tr>
+<tr><td>L</td><td>76–82</td><td>98–104</td><td>80</td></tr>
+<tr><td>XL</td><td>82–88</td><td>104–110</td><td>82</td></tr>
+<tr><td>XXL</td><td>88–96</td><td>110–118</td><td>84</td></tr>
+</table>`,
+  shirts: `<table class="size-chart-table" id="chart-shirts">
+<tr><th>SIZE</th><th>CHEST (cm)</th><th>LENGTH (cm)</th><th>SHOULDER (cm)</th></tr>
+<tr><td>XS</td><td>86–90</td><td>62</td><td>40</td></tr>
+<tr><td>S</td><td>90–94</td><td>65</td><td>42</td></tr>
+<tr><td>M</td><td>94–100</td><td>68</td><td>44</td></tr>
+<tr><td>L</td><td>100–106</td><td>71</td><td>46</td></tr>
+<tr><td>XL</td><td>106–112</td><td>74</td><td>48</td></tr>
+<tr><td>XXL</td><td>112–118</td><td>77</td><td>50</td></tr>
+</table>`
+};
 
 // ============ PRODUCTS DATA ============
 const products = [
@@ -1928,26 +1967,11 @@ function showToast(msg) {
 }
 
 // ============ CURSOR (desktop only) ============
-const cursor = document.getElementById('cursor');
 const dot = document.getElementById('cursorDot');
-if (window.matchMedia('(pointer: fine)').matches) {
-  let mx=0, my=0, cx=0, cy=0;
+if (window.matchMedia('(pointer: fine)').matches && dot) {
   document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px';
-    dot.style.top = my + 'px';
-  });
-  function animateCursor() {
-    cx += (mx - cx) * 0.15;
-    cy += (my - cy) * 0.15;
-    cursor.style.left = cx + 'px';
-    cursor.style.top = cy + 'px';
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-  document.querySelectorAll('a,button').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
   });
 }
 
