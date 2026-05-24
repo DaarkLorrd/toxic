@@ -1378,6 +1378,18 @@ footer{
 </div>
 
 
+    <div class="user-dropdown-email" id="dropEmail">—</div>
+  </div>
+  <button class="user-dropdown-link" onclick="viewOrders()">📦 My Orders</button>
+  <button class="user-dropdown-link danger" onclick="signOut()">Sign Out</button>
+</div>
+
+<!-- VISITOR BADGE (admin only) -->
+<div class="visitor-badge" id="visitorBadge">
+  <div>👁 <span id="vbCount">—</span> visitors today</div>
+  <div>📍 Latest: <span class="vb-loc" id="vbLoc">—</span></div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1739,10 +1751,100 @@ function placeOrder(){
 // ═══════════════════════════════════════════════════
 // AUTH (Firebase)
 // ═══════════════════════════════════════════════════
+// SETUP: Replace these with your Firebase config from console.firebase.google.com
+var firebaseConfig = {
+  apiKey: "REPLACE_FIREBASE_API_KEY",
+  authDomain: "REPLACE_PROJECT_ID.firebaseapp.com",
+  projectId: "REPLACE_PROJECT_ID",
+  storageBucket: "REPLACE_PROJECT_ID.appspot.com",
+  messagingSenderId: "REPLACE_SENDER_ID",
+  appId: "REPLACE_APP_ID"
+};
+var firebaseReady = false;
+try {
+  if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== 'REPLACE_FIREBASE_API_KEY') {
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged(function(user) {
+      currentUser = user;
+      updateAuthUI(user);
+    });
+    firebaseReady = true;
+  }
+} catch(e) { console.log('Firebase not configured yet'); }
 
-
+function updateAuthUI(user) {
+  var btn = document.getElementById('authBtn');
+  var avatar = document.getElementById('authAvatar');
+  if (!btn || !avatar) return;
+  if (user) {
+    btn.style.display = 'none';
+    avatar.classList.add('on');
+    var initials = (user.displayName || user.email || 'U').substring(0,2).toUpperCase();
+    avatar.textContent = initials;
+    var dn = document.getElementById('dropName');
+    var de = document.getElementById('dropEmail');
+    if (dn) dn.textContent = user.displayName || 'Toxic Member';
+    if (de) de.textContent = user.email || '';
+  } else {
+    btn.style.display = '';
+    avatar.classList.remove('on');
+    document.getElementById('userDropdown').classList.remove('on');
+  }
+}
+function openAuth() { document.getElementById('authModal').classList.add('on'); }
+function closeAuth() { document.getElementById('authModal').classList.remove('on'); }
+function switchAuthTab(tab) {
+  document.getElementById('tabSignIn').classList.toggle('on', tab==='signin');
+  document.getElementById('tabSignUp').classList.toggle('on', tab==='signup');
+  document.getElementById('formSignIn').classList.toggle('hidden', tab!=='signin');
+  document.getElementById('formSignUp').classList.toggle('hidden', tab!=='signup');
+}
+function signInEmail() {
+  if (!firebaseReady) { showToast('AUTH NOT CONFIGURED YET'); return; }
+  var em = document.getElementById('siEmail').value.trim();
+  var pw = document.getElementById('siPass').value;
+  if (!em || !pw) { showToast('FILL IN ALL FIELDS'); return; }
+  firebase.auth().signInWithEmailAndPassword(em, pw)
+    .then(function(){ closeAuth(); showToast('WELCOME BACK'); })
+    .catch(function(e){ showToast(e.message.toUpperCase()); });
+}
+function signUpEmail() {
+  if (!firebaseReady) { showToast('AUTH NOT CONFIGURED YET'); return; }
+  var name = document.getElementById('suName').value.trim();
+  var em = document.getElementById('suEmail').value.trim();
+  var pw = document.getElementById('suPass').value;
+  if (!name || !em || !pw) { showToast('FILL IN ALL FIELDS'); return; }
+  if (pw.length < 6) { showToast('PASSWORD TOO SHORT'); return; }
+  firebase.auth().createUserWithEmailAndPassword(em, pw)
+    .then(function(cred){ return cred.user.updateProfile({displayName:name}); })
+    .then(function(){ closeAuth(); showToast('ACCOUNT CREATED!'); })
+    .catch(function(e){ showToast(e.message.toUpperCase()); });
+}
+function signInGoogle() {
+  if (!firebaseReady) { showToast('AUTH NOT CONFIGURED YET'); return; }
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider)
+    .then(function(){ closeAuth(); showToast('WELCOME TO TOXIC'); })
+    .catch(function(e){ showToast(e.message.toUpperCase()); });
+}
+function signOut() {
+  if (!firebaseReady) return;
+  firebase.auth().signOut().then(function(){ showToast('SIGNED OUT'); });
+  document.getElementById('userDropdown').classList.remove('on');
+}
+function toggleDropdown() {
+  document.getElementById('userDropdown').classList.toggle('on');
+}
+function viewOrders() {
+  showToast('ORDER HISTORY COMING SOON');
+  document.getElementById('userDropdown').classList.remove('on');
+}
 // Close dropdown on outside click
-
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('userDropdown');
+  var av = document.getElementById('authAvatar');
+  if (dd && !dd.contains(e.target) && e.target !== av) dd.classList.remove('on');
+});
 
 // ═══════════════════════════════════════════════════
 // VISITOR TRACKING (IP geolocation)
@@ -1777,6 +1879,12 @@ function trackVisitor() {
 }
 
 // Show admin badge only if admin email
+function checkAdmin() {
+  if (currentUser && currentUser.email === 'lordifygram@gmail.com') {
+    var badge = document.getElementById('visitorBadge');
+    if (badge) badge.classList.add('on');
+  }
+}
 
 // ═══════════════════════════════════════════════════
 // TOAST, CURSOR, MOBILE NAV
